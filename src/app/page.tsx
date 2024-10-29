@@ -5,18 +5,23 @@ import Papa from 'papaparse';
 import jsPDF from 'jspdf';
 import bwipjs from 'bwip-js';
 
+// Definindo um tipo para os dados do CSV
+interface CsvRow {
+  LOTES: string; // Defina como string, pois é o que estamos esperando
+}
+
 export default function HomePage() {
-  const [csvData, setCsvData] = useState<any[]>([]);
+  const [csvData, setCsvData] = useState<CsvRow[]>([]); // Usando o tipo CsvRow
   const [loading, setLoading] = useState(false);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      Papa.parse(file, {
+      Papa.parse<CsvRow>(file, { // Adicionando o tipo aqui também
         header: true,
         complete: (results) => {
           // Filtrando linhas que não têm valor na coluna 'LOTES'
-          const filteredData = results.data.filter((row: any) => row.LOTES && row.LOTES.trim() !== "");
+          const filteredData = results.data.filter(row => row.LOTES && row.LOTES.trim() !== "");
           setCsvData(filteredData);
           console.log('Dados do CSV filtrados:', filteredData);
         },
