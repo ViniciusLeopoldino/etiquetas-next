@@ -5,8 +5,12 @@ import Papa from 'papaparse';
 import jsPDF from 'jspdf';
 import bwipjs from 'bwip-js';
 
+interface CsvRow {
+  LOTES: string; 
+}
+
 export default function HomePage() {
-  const [csvData, setCsvData] = useState<any[]>([]);
+  const [csvData, setCsvData] = useState<CsvRow[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,7 +19,7 @@ export default function HomePage() {
       Papa.parse(file, {
         header: true,
         complete: (results) => {
-          setCsvData(results.data);
+          setCsvData(results.data as CsvRow[]);
           console.log('Dados do CSV:', results.data);
         },
       });
