@@ -5,22 +5,21 @@ import Papa from 'papaparse';
 import jsPDF from 'jspdf';
 import bwipjs from 'bwip-js';
 
-// Definindo um tipo para os dados do CSV
+
 interface CsvRow {
-  LOTES: string; // Defina como string, pois é o que estamos esperando
+  LOTES: string;
 }
 
 export default function HomePage() {
-  const [csvData, setCsvData] = useState<CsvRow[]>([]); // Usando o tipo CsvRow
+  const [csvData, setCsvData] = useState<CsvRow[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      Papa.parse<CsvRow>(file, { // Adicionando o tipo aqui também
+      Papa.parse<CsvRow>(file, {
         header: true,
         complete: (results) => {
-          // Filtrando linhas que não têm valor na coluna 'LOTES'
           const filteredData = results.data.filter(row => row.LOTES && row.LOTES.trim() !== "");
           setCsvData(filteredData);
           console.log('Dados do CSV filtrados:', filteredData);
@@ -96,12 +95,15 @@ export default function HomePage() {
   };
 
   return (
-    <div>
-      <h1>Importar arquivo CSV</h1>
-      <input type="file" accept=".csv" onChange={handleFileUpload} />
-      <button onClick={generatePDF} disabled={loading}>
-        {loading ? 'Gerando...' : 'Gerar PDFs'}
+    <div className="container">
+      <img src="/logo.png" alt="Logo" className="logo" /> 
+      <h1>Impressão de Lotes</h1>
+      <p>Importar arquivo CSV</p>
+      <input type="file" accept=".csv" onChange={handleFileUpload} className="fileInput" />
+      <button onClick={generatePDF} disabled={loading} className="button">
+      {loading ? 'Gerando...' : 'Gerar Etiquetas'}
       </button>
     </div>
   );
 }
+
