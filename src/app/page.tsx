@@ -5,12 +5,13 @@ import Papa from 'papaparse';
 import jsPDF from 'jspdf';
 import bwipjs from 'bwip-js';
 
+// Defina a interface para os dados CSV
 interface CsvRow {
-  LOTES: string; 
+  LOTES: string; // Defina os tipos adequados
 }
 
 export default function HomePage() {
-  const [csvData, setCsvData] = useState<CsvRow[]>([]);
+  const [csvData, setCsvData] = useState<CsvRow[]>([]); // Use CsvRow em vez de any
   const [loading, setLoading] = useState(false);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +20,7 @@ export default function HomePage() {
       Papa.parse(file, {
         header: true,
         complete: (results) => {
-          setCsvData(results.data as CsvRow[]);
+          setCsvData(results.data as CsvRow[]); // Faça o type assertion aqui
           console.log('Dados do CSV:', results.data);
         },
       });
@@ -31,13 +32,6 @@ export default function HomePage() {
     console.log('Gerando PDF...');
     if (!csvData || csvData.length === 0) {
       console.error("Nenhum dado CSV encontrado");
-      setLoading(false);
-      return;
-    }
-
-    // Verifica se a coluna 'LOTES' está presente no cabeçalho
-    if (!csvData[0].hasOwnProperty('LOTES')) {
-      console.error("O arquivo CSV não contém a coluna 'LOTES'.");
       setLoading(false);
       return;
     }
@@ -69,21 +63,18 @@ export default function HomePage() {
     };
 
     const generateBarcodes = async () => {
-      for (let index = 1; index < csvData.length; index++) { // Começar do índice 1 para ignorar o cabeçalho
+      for (let index = 0; index < csvData.length; index++) {
         const row = csvData[index];
-
-        // Verifica se a linha contém um valor para 'LOTES' e se não é vazia
-        if (!row['LOTES'] || row['LOTES'].trim() === '') {
-          console.warn(`Linha ${index + 1} não contém um valor para 'LOTES' ou está vazia.`);
-          continue; // Ignora esta linha se não tiver 'LOTES'
+        if (!row.LOTES) {
+          console.error(`Linha ${index + 1} não contém um valor para 'LOTES'`);
+          continue;
         }
-
-        if (index > 1) {
+        if (index > 0) {
           doc.addPage();
         }
 
         try {
-          const barcodeImage = await generateBarcodeImage(row['LOTES']);
+          const barcodeImage = await generateBarcodeImage(row.LOTES);
           doc.addImage(barcodeImage, 'PNG', 2, 1, 6, 4);
         } catch (error) {
           console.error("Erro ao gerar código de barras:", error);
@@ -112,4 +103,3 @@ export default function HomePage() {
     </div>
   );
 }
-
