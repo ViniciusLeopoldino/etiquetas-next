@@ -111,8 +111,8 @@ export default function HomePage() {
   return (
     <div className="container"> {/* Container principal */}
       <img src="/logo.png" alt="Logo" className="logo" /> {/* Logo da aplicação */}
-      <h1>Impressão de Lotes</h1> {/* Título da página */}
-      <p>Importar arquivo CSV</p> {/* Instrução para o usuário */}
+      <h1>Impressão de Etiquetas</h1> {/* Título da página */}
+      <p>Importar CSV</p> {/* Instrução para o usuário */}
       <input type="file" accept=".csv" onChange={handleFileUpload} className="fileInput" /> {/* Input para upload do CSV */}
       <button onClick={generatePDF} disabled={loading} className="button"> {/* Botão para gerar PDF */}
         {loading ? 'Gerando...' : 'Gerar Etiquetas'} {/* Texto dinâmico baseado no estado de carregamento */}
