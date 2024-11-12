@@ -116,7 +116,7 @@ export default function HomePage() {
       <img src="/logo.png" alt="Logo" className="logo" />
       <h1>Impressão de Etiquetas</h1>
       <p>Importar CSV</p>
-      <input type="file" accept=".csv" onChange={handleFileUpload} className="fileInput" />
+      <input title='Import de Arquivo CSV' type="file" accept=".csv" onChange={handleFileUpload} className="fileInput" />
       <button onClick={generatePDF} disabled={loading} className="button">
         {loading ? 'Gerando...' : 'Gerar Etiquetas'}
       </button>
