@@ -78,10 +78,16 @@ export default function HomePage() {
         }
 
         try {
+          /////////////////Alterar fonte e tipo de texto/////////////////
+          //Tipos de Texto = Normal(padrão), Bold(negrito), Italic(itálico) e BoldItalic(negrito e itálico)
+          //Tipos de fonte = Helvetica, Times e Courier
+          doc.setFont("Helvetica", "Bold");
+          doc.setFontSize(11);
+
           // Código de barras inicial (da coluna CODIGO)
           const codigoBarcode = await generateBarcodeImage(row.CODIGO);
           doc.addImage(codigoBarcode, 'PNG', 0.1, 0.1, 9.8, 1.8);
-          // doc.text(`Código: ${row.CODIGO}`, 0.5, 3.2); // Valor do código
+          doc.text(`Código:`, 0.1, 1.8); // Valor do código
 
           /////////////////Alterar fonte e tipo de texto/////////////////
           //Tipos de Texto = Normal(padrão), Bold(negrito), Italic(itálico) e BoldItalic(negrito e itálico)
@@ -91,14 +97,14 @@ export default function HomePage() {
 
           // Adiciona descrição, volume e peças
           const descricaoTexto = doc.splitTextToSize(`Descrição: ${row.DESCRICAO}`, 9.8);
-          doc.text(descricaoTexto, 0.2, 3);
-          doc.text(`Qtd Volume: ${row.QTD_VOLUME}`, 0.2, 4);
-          doc.text(`Qtd Peças: ${row.QTD_PECAS}`, 0.2, 4.5);
+          doc.text(descricaoTexto, 0.2, 2.8);
+          doc.text(`Qtd Volume: ${row.QTD_VOLUME}`, 0.2, 4.1);
+          doc.text(`Qtd Peças: ${row.QTD_PECAS}`, 0.2, 4.7);
 
           // Código de barras final (da coluna LOTES)
           const lotesBarcode = await generateBarcodeImage(row.LOTES);
           doc.addImage(lotesBarcode, 'PNG', 0.1, 5.2, 9.8, 1.8);
-          // doc.text(`Lote: ${row.LOTES}`, 0.5, 8.2); // Valor do lote
+          doc.text(`Lote:`, 0.1, 6.9); // Valor do lote
 
         } catch (error) {
           console.error("Erro ao gerar código de barras:", error);
