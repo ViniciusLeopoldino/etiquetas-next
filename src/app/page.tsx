@@ -68,7 +68,7 @@ export default function HomePage() {
     const generateBarcodes = async () => {
       for (let index = 0; index < csvData.length; index++) {
         const row = csvData[index];
-        
+
         if (!row.LOTES) {
           console.error(`Linha ${index + 1} não contém um valor para 'LOTES'`);
           continue;
@@ -82,15 +82,20 @@ export default function HomePage() {
           const barcodeImage = await generateBarcodeImage(row.LOTES);
           doc.addImage(barcodeImage, 'PNG', 0.5, 1, 9, 2); // Ajusta o tamanho para caber as demais informações
 
+          /////////////////Alterar fonte e tipo de texto/////////////////
+          //Tipos de Texto = Normal(padrão), Bold(negrito), Italic(itálico) e BoldItalic(negrito e itálico)
+          //Tipos de fonte = Helvetica, Times e Courier
+          doc.setFont("Helvetica", "Bold"); // Define a fonte para negrito
+
           // Define o tamanho da fonte para cada campo
-          doc.setFontSize(10); // Tamanho para o código
+          doc.setFontSize(11); // Tamanho para o código
           doc.text(`Código: ${row.CODIGO}`, 0.5, 4);
 
-          doc.setFontSize(10); // Tamanho menor para descrição
+          doc.setFontSize(11); // Tamanho menor para descrição
           const descricaoTexto = doc.splitTextToSize(`Descrição: ${row.DESCRICAO}`, 9);
           doc.text(descricaoTexto, 0.5, 4.5);
 
-          doc.setFontSize(10); // Tamanho para Qtd Volume e Qtd Peças
+          doc.setFontSize(11); // Tamanho para Qtd Volume e Qtd Peças
           doc.text(`Qtd Volume: ${row.QTD_VOLUME}`, 0.5, 5.5);
           doc.text(`Qtd Peças: ${row.QTD_PECAS}`, 0.5, 6);
 
