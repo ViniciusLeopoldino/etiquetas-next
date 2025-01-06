@@ -11,6 +11,7 @@ interface CsvRow {
   DESCRICAO: string;
   QTD_VOLUME: string;
   QTD_PECAS: string;
+  DATA?: string;
 }
 
 export default function HomePage() {
@@ -100,6 +101,10 @@ export default function HomePage() {
           doc.text(descricaoTexto, 0.2, 2.8);
           doc.text(`Qtd Volume: ${row.QTD_VOLUME}`, 0.2, 4.1);
           doc.text(`Qtd Peças: ${row.QTD_PECAS}`, 0.2, 4.7);
+
+          // Adiciona data (se existir)
+          const data = row.DATA ? row.DATA : new Date().toLocaleDateString();
+          doc.text(`Data: ${data}`, 9.8, 4.7, { align: 'right' });
 
           // Código de barras final (da coluna LOTES)
           const lotesBarcode = await generateBarcodeImage(row.LOTES);
