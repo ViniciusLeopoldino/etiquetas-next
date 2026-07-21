@@ -11,7 +11,7 @@
   "dependencies": {
     "@types/bwip-js": "^3.2.3",
     "bwip-js": "^4.5.1",
-    "canvas": "^2.11.2",
+    "canvas": "^3.0.0",
     "jsbarcode": "^3.11.6",
     "jspdf": "^2.5.2",
     "next": "15.0.1",
